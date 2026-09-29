@@ -1,0 +1,596 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>💌 A Special Date Invitation</title>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        background: linear-gradient(135deg, #ffd6e8, #e7d9ff);
+        font-family: Arial, sans-serif;
+    }
+
+    .heart {
+        position: fixed;
+        color: rgba(255, 255, 255, 0.7);
+        animation: float 6s linear infinite;
+        pointer-events: none;
+    }
+
+    @keyframes float {
+        0% {
+            transform: translateY(110vh) scale(0.7);
+            opacity: 0;
+        }
+
+        20% {
+            opacity: 1;
+        }
+
+        100% {
+            transform: translateY(-10vh) scale(1.2);
+            opacity: 0;
+        }
+    }
+
+    .card {
+        position: relative;
+        width: 90%;
+        max-width: 430px;
+        max-height: 90vh;
+        overflow-y: auto;
+        background: rgba(255, 255, 255, 0.96);
+        padding: 35px 25px;
+        border-radius: 30px;
+        text-align: center;
+        box-shadow: 0 15px 40px rgba(120, 70, 120, 0.18);
+        z-index: 2;
+        animation: appear 0.5s ease;
+    }
+
+    @keyframes appear {
+        from {
+            opacity: 0;
+            transform: scale(0.9) translateY(15px);
+        }
+
+        to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    }
+
+    h1 {
+        color: #d76c9f;
+        margin-bottom: 15px;
+    }
+
+    h2 {
+        color: #c85b91;
+    }
+
+    p {
+        color: #666;
+        font-size: 17px;
+        line-height: 1.7;
+    }
+
+    .sub {
+        font-size: 14px;
+        color: #999;
+    }
+
+    button {
+        width: 90%;
+        border: none;
+        background: linear-gradient(135deg, #f59bc5, #df78ad);
+        color: white;
+        padding: 14px 18px;
+        margin: 7px 0;
+        border-radius: 30px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.25s;
+        box-shadow: 0 5px 12px rgba(220, 100, 160, 0.2);
+    }
+
+    button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 18px rgba(220, 100, 160, 0.3);
+    }
+
+    button:active {
+        transform: scale(0.96);
+    }
+
+    .option {
+        background: #fff0f7;
+        color: #c45c91;
+        border: 2px solid #f4b2d1;
+    }
+
+    .option:hover {
+        background: #ffe2ef;
+    }
+
+    .progress {
+        font-size: 13px;
+        color: #aaa;
+        margin-bottom: 10px;
+    }
+
+    .emoji {
+        font-size: 55px;
+        margin: 5px 0 15px;
+    }
+
+    .date-box {
+        background: #fff4f8;
+        padding: 18px;
+        border-radius: 20px;
+        margin: 15px 0;
+        text-align: left;
+    }
+
+    label {
+        display: block;
+        color: #b95888;
+        font-weight: bold;
+        margin-bottom: 7px;
+    }
+
+    input,
+    select {
+        width: 100%;
+        padding: 13px;
+        border: 2px solid #f2c1d7;
+        border-radius: 12px;
+        outline: none;
+        font-size: 16px;
+        background: white;
+    }
+
+    input:focus,
+    select:focus {
+        border-color: #df78ad;
+    }
+
+    .summary {
+        background: linear-gradient(135deg, #fff0f7, #f2edff);
+        border-radius: 20px;
+        padding: 20px;
+        margin: 20px 0;
+    }
+
+    .summary strong {
+        color: #c4588d;
+    }
+
+    .small-heart {
+        font-size: 25px;
+    }
+
+    .success {
+        font-size: 60px;
+        animation: bounce 1s infinite alternate;
+    }
+
+    @keyframes bounce {
+        from {
+            transform: translateY(0);
+        }
+
+        to {
+            transform: translateY(-10px);
+        }
+    }
+</style>
+
+</head> <body>
+<!-- Floating hearts -->
+<div class="heart" style="left:10%; animation-delay:0s;">♡</div>
+<div class="heart" style="left:25%; animation-delay:2s;">♥</div>
+<div class="heart" style="left:45%; animation-delay:4s;">♡</div>
+<div class="heart" style="left:70%; animation-delay:1s;">♥</div>
+<div class="heart" style="left:85%; animation-delay:3s;">♡</div>
+
+<div class="card" id="game">
+
+    <div class="emoji">💌</div>
+
+    <h1>A Special Invitation</h1>
+
+    <p>
+        Hey, you ❤️<br>
+        I prepared a little game just for you.
+    </p>
+
+    <p>
+        Don't take the questions too seriously...<br>
+        because there might be something waiting<br>
+        for you at the end. 🥰
+    </p>
+
+    <button onclick="startGame()">
+        Accept the Invitation 💗
+    </button>
+
+    <p class="sub">※ This little game takes about 1 minute.</p>
+
+</div>
+
+<script>
+
+    let dateChoice = "";
+    let timeChoice = "";
+    let activityChoice = "";
+
+    function changePage(html) {
+
+        const game = document.getElementById("game");
+
+        game.style.animation = "none";
+
+        setTimeout(() => {
+            game.innerHTML = html;
+            game.style.animation = "appear 0.5s ease";
+        }, 50);
+    }
+
+    function startGame() {
+
+        changePage(`
+            <div class="progress">Question 1 / 4</div>
+
+            <div class="emoji">💭</div>
+
+            <h1>Question 1</h1>
+
+            <p>
+                Why do you think<br>
+                I suddenly asked you to play this game?
+            </p>
+
+            <button class="option" onclick="question2()">
+                💗 A. Because I'm cute
+            </button>
+
+            <button class="option" onclick="question2()">
+                🥰 B. Because I miss you
+            </button>
+
+            <button class="option" onclick="question2()">
+                ❤️ C. Because I want to take you on a date
+            </button>
+
+            <p class="sub">
+                Hint: The answer might be pretty obvious... 😏
+            </p>
+        `);
+    }
+
+    function question2() {
+
+        changePage(`
+            <div class="progress">Question 2 / 4</div>
+
+            <div class="emoji">🍰</div>
+
+            <h1>Question 2</h1>
+
+            <p>
+                If we suddenly had a free afternoon<br>
+                to spend together...
+            </p>
+
+            <p>What would you choose?</p>
+
+            <button class="option" onclick="question3('🍴 A Nice Dinner')">
+                🍴 Have a nice dinner
+            </button>
+
+            <button class="option" onclick="question3('🎬 Watch a Movie')">
+                🎬 Watch a movie
+            </button>
+
+            <button class="option" onclick="question3('☕ Coffee & Conversation')">
+                ☕ Find a cozy café and talk
+            </button>
+
+            <button class="option" onclick="question3('🌃 A Little Adventure')">
+                🌃 Go for a walk and explore
+            </button>
+
+            <p class="sub">
+                Honestly... I like all of these options 🤭
+            </p>
+        `);
+    }
+
+    function question3(choice) {
+
+        activityChoice = choice;
+
+        changePage(`
+            <div class="progress">Question 3 / 4</div>
+
+            <div class="emoji">💞</div>
+
+            <h1>Question 3</h1>
+
+            <p>
+                What if, during our date,<br>
+                I suddenly asked you...
+            </p>
+
+            <h2>
+                "Can I hold your hand?"
+            </h2>
+
+            <button class="option" onclick="datePicker()">
+                🥺 Okay...
+            </button>
+
+            <button class="option" onclick="datePicker()">
+                🙈 Depends on how you behave
+            </button>
+
+            <button class="option" onclick="datePicker()">
+                ❤️ You don't even have to ask
+            </button>
+
+            <p class="sub">
+                Okay, okay... I won't tease you anymore 😳
+            </p>
+        `);
+    }
+
+    function datePicker() {
+
+        changePage(`
+            <div class="progress">Final Question / 4</div>
+
+            <div class="emoji">📅</div>
+
+            <h1>Let's Plan Our Date</h1>
+
+            <p>
+                Okay, enough with the games...<br>
+                Let's make this real. ❤️
+            </p>
+
+            <div class="date-box">
+
+                <label>📅 Pick a date</label>
+
+                <input
+                    type="date"
+                    id="dateInput"
+                    onchange="dateChoice=this.value"
+                >
+
+                <br><br>
+
+                <label>🕐 Pick a time</label>
+
+                <select
+                    id="timeInput"
+                    onchange="timeChoice=this.value"
+                >
+
+                    <option value="">Choose a time</option>
+
+                    <option value="11:00 AM">11:00 AM</option>
+                    <option value="11:30 AM">11:30 AM</option>
+                    <option value="12:00 PM">12:00 PM</option>
+                    <option value="12:30 PM">12:30 PM</option>
+
+                    <option value="1:00 PM">1:00 PM</option>
+                    <option value="1:30 PM">1:30 PM</option>
+                    <option value="2:00 PM">2:00 PM</option>
+                    <option value="2:30 PM">2:30 PM</option>
+
+                    <option value="5:00 PM">5:00 PM</option>
+                    <option value="5:30 PM">5:30 PM</option>
+                    <option value="6:00 PM">6:00 PM</option>
+                    <option value="6:30 PM">6:30 PM</option>
+
+                    <option value="7:00 PM">7:00 PM</option>
+                    <option value="7:30 PM">7:30 PM</option>
+                    <option value="8:00 PM">8:00 PM</option>
+                    <option value="8:30 PM">8:30 PM</option>
+
+                </select>
+
+            </div>
+
+            <button onclick="confirmDate()">
+                💗 This Date Sounds Perfect!
+            </button>
+
+            <p class="sub">
+                Don't worry, we can always change the plan later. 😌
+            </p>
+        `);
+
+        const input = document.getElementById("dateInput");
+
+        const today = new Date();
+
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, "0");
+        const day = String(today.getDate()).padStart(2, "0");
+
+        input.min = `${year}-${month}-${day}`;
+    }
+
+    function confirmDate() {
+
+        const date = document.getElementById("dateInput").value;
+        const time = document.getElementById("timeInput").value;
+
+        if (!date || !time) {
+
+            alert("Wait! 🥺 You haven't picked a date or time yet!");
+
+            return;
+        }
+
+        dateChoice = date;
+        timeChoice = time;
+
+        const dateObject = new Date(date + "T00:00:00");
+
+        const formattedDate =
+            dateObject.getFullYear() +
+            " / " +
+            String(dateObject.getMonth() + 1).padStart(2, "0") +
+            " / " +
+            String(dateObject.getDate()).padStart(2, "0");
+
+        changePage(`
+
+            <div class="emoji">💌</div>
+
+            <h1>Almost There...</h1>
+
+            <p>
+                Let me make sure I got everything right. 👀
+            </p>
+
+            <div class="summary">
+
+                <p>
+                    📅 <strong>Date</strong><br>
+                    ${formattedDate}
+                </p>
+
+                <p>
+                    🕐 <strong>Time</strong><br>
+                    ${time}
+                </p>
+
+                <p>
+                    💕 <strong>Date Plan</strong><br>
+                    ${activityChoice}
+                </p>
+
+            </div>
+
+            <p>
+                So... if everything looks good...
+            </p>
+
+            <h2>
+                Are you ready to make it a date? 🥺
+            </h2>
+
+            <button onclick="yes()">
+                ❤️ Yes! It's a Date!
+            </button>
+
+            <button class="option" onclick="datePicker()">
+                ✏️ I Want to Change It
+            </button>
+
+        `);
+    }
+
+    function yes() {
+
+        const dateObject = new Date(dateChoice + "T00:00:00");
+
+        const formattedDate =
+            dateObject.getFullYear() +
+            " / " +
+            String(dateObject.getMonth() + 1).padStart(2, "0") +
+            " / " +
+            String(dateObject.getDate()).padStart(2, "0");
+
+        changePage(`
+
+            <div class="success">🎉</div>
+
+            <h1>DATE CONFIRMED! 💕</h1>
+
+            <p>
+                Congratulations!<br>
+                You completed every challenge.
+            </p>
+
+            <div class="summary">
+
+                <h2>💌 Our Date</h2>
+
+                <p>
+                    📅 <strong>${formattedDate}</strong>
+                </p>
+
+                <p>
+                    🕐 <strong>${timeChoice}</strong>
+                </p>
+
+                <p>
+                    💕 <strong>${activityChoice}</strong>
+                </p>
+
+                <p>
+                    📍 <strong>Location: A Secret Place 🤫</strong>
+                </p>
+
+            </div>
+
+            <p>
+                It's officially a date. ❤️
+            </p>
+
+            <h2>
+                No backing out now 😤
+            </h2>
+
+            <p>
+                I can't wait to see you. 🥰
+            </p>
+
+            <div class="small-heart">
+                💗 💕 💖 💘 💝
+            </div>
+
+        `);
+
+        createHearts();
+    }
+
+    function createHearts() {
+
+        for (let i = 0; i < 25; i++) {
+
+            const heart = document.createElement("div");
+
+            heart.className = "heart";
+
+            heart.innerHTML =
+                ["❤️", "💗", "💕", "💖", "💘"][
+                    Math.floor(Math.random() * 5)
+                ];
+
+            heart.style.left = Math.random() * 100 + "%";
+
+            heart.style.animationDuration =
+                (4 + Math.random() * 4) + "s";
+
+            heart.style.animationDelay =
+                Math.random() * 3 + "s";
+
+            document.body.appendChild(heart);
+        }
+    }
+
+</script>
+
+</body> </html>
